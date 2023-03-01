@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
-const MyTrips = () => {
+const SignUp = () => {
   return (
     <div>
-      Login
+      Signup
     </div>
   )
 }
 
-export default MyTrips;
+export default SignUp;

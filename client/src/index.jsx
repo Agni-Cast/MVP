@@ -5,7 +5,7 @@ import SearchBar from './components/SearchBar.jsx';
 import Login from './components/Login.jsx';
 import MyTrips from './components/MyTrips.jsx';
 import Home from './components/Home.jsx'
-
+import SignUp from './components/SignUp.jsx'
 
 const App = () => {
   const [city, setCity] = useState('Miami')
@@ -26,6 +26,7 @@ const App = () => {
   return (
     <div>
       <h1>Vacations Bucketlist</h1>
+      <SignUp/>
       <Login/>
       <SearchBar city={city} setCity={setCity} cityResult={cityResult} setCityResult={setCityResult}/>
       <Home city={city} setCity={setCity} cityResult={cityResult} setCityResult={setCityResult}/>

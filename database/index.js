@@ -1,18 +1,17 @@
-const mysql = require('mysql2');
-const createTables = require('./config');
-const Promise = require('bluebird');
-const database = 'mvp';
+const mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/mvp');
 
-const connection = mysql.createConnection({
-  user: 'root',
+// Creating user schema
+const UserSchema = mongoose.Schema({
+  name : {
+      type : String,
+      required : true
+  },
+  password : {
+    type : String,
+    required : true
+  }
 });
 
-const db = Promise.promisifyAll(connection, { multiArgs: true });
+const User = module.exports = mongoose.model('User', UserSchema);
 
-db.connectAsync()
-  .then(() => console.log(`Connected to ${database} database as ID ${db.threadId}`))
-  .then(() => db.queryAsync(`CREATE DATABASE IF NOT EXISTS ${database}`))
-  .then(() => db.queryAsync(`USE ${database}`))
-  .then(() => createTables(db));
-
-module.exports = db;
