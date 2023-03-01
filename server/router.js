@@ -25,28 +25,36 @@ const comparePasswords = async (inputPassword, hashedPassword) => {
 /**************************** */
 
 // User login api
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
+  try {
+    let user = await User.findOne({ name: req.body.name });
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "Account not found",
+      });
+    }
 
-  // Find user with requested email
-  // User.findOne({ email: req.body.email }, function (err, user) {
-  //   if (user === null) {
-  //     return res.status(400).send({
-  //       message: "User not found."
-  //     });
-  //   }
-  //   else {
-  //     if (user.validPassword(req.body.password)) {
-  //       return res.status(201).send({
-  //         message: "User Logged In",
-  //       })
-  //     }
-  //     else {
-  //       return res.status(400).send({
-  //         message: "Wrong Password"
-  //       });
-  //     }
-  //   }
-  // });
+    const isValid = await comparePasswords(req.body.password, user.password);
+
+    if (!isValid) {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid password",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      message: "User logged in successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: true,
+      message: "Couldn't login. Please try again.",
+    });
+  }
 });
 
 // User signup api
