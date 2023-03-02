@@ -10,11 +10,20 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use(bodyparser.json()); // Using bodyparser to parse json data
 
 // Use user route when url matches /api/user/
 app.use('/api/user', user);
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 app.get('/location/attractions', (req, res) => {
   axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?&query=${req.query.query}&key=${token}`,
@@ -28,6 +37,12 @@ app.get('/location/attractions', (req, res) => {
     )
 })
 
+// app.post('/add-attraction', (req, res) => {
+//   let trip = req.body;
+//   const
+// })
+
+// https://maps.googleapis.com/maps/api/place/photo?parameters
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI);

@@ -5,11 +5,11 @@ const SearchBar = ({city, setCity, cityResult, setCityResult}) => {
   const [searchCity, setSearchCity] = useState('')
 
   const handleSubmit = (event) => {
-    console.log(searchCity)
+    // console.log(searchCity)
     axios.get(`/location/attractions?query=tourist_attraction%20in%20}${searchCity}`)
     .then((response) => {
       setCityResult(response.data.results)
-      console.log('inside Search', cityResult)
+      // console.log('inside Search', cityResult)
     })
     .catch((error) => {
     })
