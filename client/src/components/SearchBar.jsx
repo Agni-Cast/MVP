@@ -1,18 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { useAuthContext } from '../useAuthContext.js'
+import { useTripContext } from '../useTripContext.js'
 
 const SearchBar = ({city, setCity, cityResult, setCityResult}) => {
+  const { user } = useAuthContext();
+  const { dispatch } = useTripContext();
   const [searchCity, setSearchCity] = useState('')
 
-  const handleSubmit = (event) => {
-    // console.log(searchCity)
-    axios.get(`/location/attractions?query=tourist_attraction%20in%20}${searchCity}`)
-    .then((response) => {
-      setCityResult(response.data.results)
-      // console.log('inside Search', cityResult)
-    })
-    .catch((error) => {
-    })
+  const handleSubmit = async (event) => {
+    if (!user) {
+      return;
+    }
+    const response = await fetch(`/location/attractions?query=tourist_attraction%20in%20${searchCity}`, {
+      headers: {
+        'Authorization': `Bearer ${user.token}`
+      }
+    });
+    const json = await response.json();
+    console.log('JSONEEEEEE',json)
+    if (response.ok) {
+      dispatch({type: 'SET TRIP', payload: json});
+    }
   }
 
   return (

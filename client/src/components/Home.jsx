@@ -3,28 +3,38 @@ import axios from 'axios';
 const { token } = require('../../../config.js');
 import SearchBar from './SearchBar.jsx'
 import MyTrips from './MyTrips.jsx';
+import { useTripContext } from '../useTripContext.js'
+import { useAuthContext } from '../useAuthContext.js'
+import TripDetail from './TripDetail.jsx'
 
 const Home = ({loginName}) => {
   const [city, setCity] = useState('Miami')
   const [cityResult, setCityResult] = useState([])
   const [photo, setPhoto] = useState('')
   const [attractionName, setAttractionName] = useState('')
-
-  console.log('Index - City: ', city)
-  console.log('Index - City result: ', cityResult)
-
-  console.log('login username: ', loginName)
+  const [added, setAdded] = useState({});
+  const { trip, dispatch } = useTripContext();
+  const { user } = useAuthContext();
 
   useEffect(() => {
-    axios.get(`/location/attractions?query=tourist_attraction%20in%20${city}`)
-    .then((response) => {
-      setCityResult(response.data.results)
-      // setPhoto(response.data.results.photos[0].photo_reference)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  }, [city])
+    const fetchCity = async () => {
+      const response = await fetch(`/location/attractions?query=tourist_attraction%20in%20${city}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({type: 'SET TRIP', payload: json});
+      }
+    }
+    if (user) {
+      fetchCity()
+    }
+  }, [dispatch, user])
+
+  console.log("TRIP", trip)
 
   // const addAttraction = (input) => {
   //   const data = {
@@ -34,31 +44,22 @@ const Home = ({loginName}) => {
   //   }
   //   // axios.post('add-attraction')
   // }
-
+  // const addAttraction = (input) => {
+  //   const attractionInfo = {
+  //     user: loginName,
+  //     city: city,
+  //     attraction: input.name,
+  //     photo: photo
+  //   }
+  //   setAdded([...attractionInfo])
+  // }
   return (
     <div>
       <div>
-        <MyTrips/>
+        <MyTrips selectedAtt={added}/>
         <SearchBar city={city} setCity={setCity} cityResult={cityResult} setCityResult={setCityResult}/>
       </div>
-      {cityResult.map((attraction) => {
-        return (
-          <div>
-          <div key={attraction.place_id} >{attraction.name}</div>
-          {/* {console.log("CONSOLEEE 111", attraction)}
-          {console.log("CONSOLEEE", attraction.photos)} */}
-          {attraction.photos ?
-          <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${attraction.photos[0].photo_reference}&key=${token}`}></img> : ''
-        }
-          <button
-          // onClick={() => {
-          //   addAttraction(attraction);
-          //   <MyTrips />
-          //   }}
-            >Add</button>
-          </div>
-        )
-      })}
+      {trip && trip.results.map(attraction => <TripDetail key={attraction.place_id} attraction={attraction} token={token}/>)}
     </div>
   )
 }
