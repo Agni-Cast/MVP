@@ -126,3 +126,13 @@ form.signup, form.login {
   background: #fff;
   border-radius: 4px;
 }
+
+.myTrip {
+  margin-right: 60px;
+}
+
+.all-trip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}

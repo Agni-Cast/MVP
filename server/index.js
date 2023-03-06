@@ -11,7 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../config.js');
-const User = require('../database/index');
+const User = require('../database/User');
+const Trip = require('../database/Trip');
 
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
@@ -52,6 +53,33 @@ app.get('/location/attractions', (req, res) => {
     res.status(501);
     }
     )
+})
+
+app.post('/save-trip', async (req, res) => {
+  const {city, attraction, photo} = req.body;
+  try {
+    const {authorization} = req.headers;
+    const token = authorization.split(' ')[1];
+    const { _id } = jwt.verify(token, SECRET);
+    const user_id = _id;
+    const trip = await Trip.create({city, attraction, photo, user_id})
+
+    res.status(200).json(trip)
+  } catch (error) {
+    res.status(400).json({error: error});
+  }
+
+})
+
+app.get('/get-trips', async (req, res) => {
+  try {
+    const user_id = req.user._id
+    const trips = await Trip.find({user_id}).sort({createdAt: -1})
+    res.status(200).json(trips)
+  } catch (error) {
+    res.status(400).json({error: error});
+  }
+
 })
 
 app.get('/*', function(req, res) {

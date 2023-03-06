@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../database/index');
-const Trips = require('../database/index')
+const User = require('../database/User');
+const Trip = require('../database/Trip')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../config.js');

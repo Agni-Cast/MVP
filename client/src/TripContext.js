@@ -8,6 +8,10 @@ export const tripReducer = (state, action) => {
       return {
         trip: action.payload
       }
+    case 'CREATE_TRIP':
+      return {
+        trips: [action.payload, {...state.trip}]
+      }
     default:
       return state;
   }

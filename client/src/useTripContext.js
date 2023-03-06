@@ -5,7 +5,7 @@ export const useTripContext = () => {
   const context = useContext(TripContext);
 
   if (!context) {
-    throw Error('useWorkout must be used inside a TripContextProvider')
+    throw Error('useTrip must be used inside a TripContextProvider')
   }
   return context;
 }
