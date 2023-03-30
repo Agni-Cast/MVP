@@ -27,6 +27,6 @@
   
 ### IV. Demos
 #### Signup/Login
-<img src="https://recordit.co/R0fR2Rtcbr.gif" width="700">
+
 
 
