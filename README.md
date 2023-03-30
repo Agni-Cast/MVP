@@ -31,6 +31,18 @@
 <!-- Saving attractions to My Trips -->
 <img src="https://recordit.co/YjdhFKLMjl.gif" width="600">
 <!-- City search and saving new sttractions -->
+<img src="https://recordit.co/kP9eJXmLl5.gif" width="600">
+<!-- Logout/Login attractions persists on My Trips -->
+<img src="https://recordit.co/x7aSHHCFJD.gif" width="600">
+
+<!-- Signup/Login -->
+<!-- <img src="https://recordit.co/R0fR2Rtcbr.gif" width="600"> -->
+<!-- Saving attractions to My Trips -->
+<!-- <img src="https://recordit.co/YjdhFKLMjl.gif" width="600"> -->
+<!-- City search and saving new sttractions -->
+<!-- <img src="https://recordit.co/kP9eJXmLl5.gif" width="600"> -->
+<!-- Logout/Login attractions persists on My Trips -->
+<!-- <img src="https://recordit.co/x7aSHHCFJD.gif" width="600"> -->
 
 
 
